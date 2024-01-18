@@ -22,36 +22,39 @@
             </div>
         </div>
         <div class="section">
-            자막
-            <button class="create-script-button" data-video-id="{{ video.id }}">
-                자막 생성
-            </button>
+            <div class="section-title">자막</div>
+            <div class="section-actions">
+                <button class="create-script-button" data-video-id="{{ video.id }}">
+                    자막 생성
+                </button>
+                <button class="copy-script-button">
+                    복사
+                </button>
+            </div>
         </div>
         <div class="script-box">
-            <!-- <button class="copy-button">붙여넣기</button> -->
             <div class="script-content">
                 {{ script.script if script.script else '자막 칸 입니다.' }}
             </div>
         </div>
         <div class="section">
-            블로그
-            <button class="create-blog-button" data-script-id="{{ script.id }}">
-                블로그 생성
-            </button>
-            <button class="copy-blog-button">
-                복사
-            </button>
+            <div class="section-title">블로그</div>
+            <div class="section-actions">
+                <button class="create-blog-button" data-script-id="{{ script.id }}">
+                    블로그 생성
+                </button>
+                <button class="copy-blog-button">
+                    복사
+                </button>
+            </div>
         </div>
         <div class="blog-box">
             <div class="blog-content">
                 {% if blog and blog.blog %}
-                    <!-- Render the actual blog content -->
                     {{ blog.blog.replace('\n', '<br>')|safe }}
                 {% else %}
-                    <p>블로그 칸 입니다.</p>
+                    블로그 칸 입니다.
                 {% endif %}
-                <!-- <div class="skeleton" style="width: 100%; height: 200px;"></div>
-                {{ (blog.blog.replace('\n', '<br>') if blog.blog else '블로그 칸 입니다.')|safe }} -->
             </div>
         </div>
     </span>

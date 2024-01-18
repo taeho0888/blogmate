@@ -1,7 +1,19 @@
 const BASE_URL = "http://127.0.0.1:8000";
+const controller = new AbortController();
+const signal = controller.signal;
+
 
 document.addEventListener('DOMContentLoaded', function () {
+    // 안먹음.. 나중에 고치기
+    const homeButton = document.querySelector('.home-button');
+    if (homeButton) {
+        homeButton.addEventListener('click', () => {
+            controller.abort();
+        });
+    }
+
     setupCreateScriptButton();
+    setupCopyScriptButton();
     setupCreateBlogButton();
     setupCopyBlogButton();
 });
@@ -13,6 +25,26 @@ function setupCreateScriptButton() {
             createScript(videoId);
         });
     });
+}
+
+function setupCopyScriptButton() {
+    const copyScriptButton = document.querySelector('.copy-script-button');
+    if (copyScriptButton) {
+        copyScriptButton.addEventListener('click', function () {
+            const scriptContent = document.querySelector('.script-content').textContent;
+
+            const textArea = document.createElement('textarea');
+            textArea.value = scriptContent;
+            document.body.appendChild(textArea);
+
+            textArea.select();
+
+            document.body.removeChild(textArea);
+
+            copyScriptButton.textContent = '완료';
+            setTimeout(() => { copyScriptButton.textContent = '복사'; }, 2000);
+        });
+    }
 }
 
 function setupCreateBlogButton() {
@@ -28,23 +60,17 @@ function setupCopyBlogButton() {
     const copyBlogButton = document.querySelector('.copy-blog-button');
     if (copyBlogButton) {
         copyBlogButton.addEventListener('click', function () {
-            // Get the blog content
             const blogContent = document.querySelector('.blog-content').innerHTML;
 
-            // Create a temporary textarea element to hold the text
             const textArea = document.createElement('textarea');
-            textArea.value = blogContent.replace(/<br>/g, '\n'); // Convert <br> back to \n
+            textArea.value = blogContent.replace(/<br>/g, '\n');
             document.body.appendChild(textArea);
 
-            // Select the text and copy it to the clipboard
             textArea.select();
-            document.execCommand('copy');
 
-            // Clean up: remove the temporary textarea
             document.body.removeChild(textArea);
 
-            // Optional: Display a message or change the button text to give feedback to the user
-            copyBlogButton.textContent = '완료!';
+            copyBlogButton.textContent = '완료';
             setTimeout(() => { copyBlogButton.textContent = '복사'; }, 2000);
         });
     }
@@ -94,6 +120,8 @@ function createBlog(scriptId) {
         console.error('블로그 생성 오류:', error);
         hideSkeletonUI();
     });
+
+    window.addEventListener('unload', () => controller.abort());
 }
 
 function showSkeletonUI() {
