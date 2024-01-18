@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Blogmate{% endblock %}
+
+{% block content %}
+<div class="main">
+    <span class="body">
+        <div class="section">현재 목록</div>
+        <div class="input-box">
+            <input type="text" id="urlInput" class="url-input" placeholder="URL을 입력하세요">
+            <span class="add-button">추가하기</span>
+        </div>
+        <div>
+            {% for item in data %}
+            <div class="item-box" data-video-id="{{ item.id }}">
+                <div class="item">
+                    <div class="content-info">
+                        <div class="thumbnail">
+                            <img src="{{ item.thumbnail_url }}" alt="photo">
+                        </div>
+                        <div class="title">
+                            {{ item.channel_name }}<br>
+                            {{ item.video_title }}
+                        </div>
+                    </div>
+                    <button class="delete-button" data-video-id="{{ item.id }}">
+                        삭제
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </span>
+</div>
+{% endblock %}

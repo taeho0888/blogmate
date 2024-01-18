@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Blogmate Details{% endblock %}
+
+{% block content %}
+<div class="main">
+    <span class="body">
+        <div>
+            <div class="section">현재 동영상</div>
+            <div class="item-box" data-video-id="{{ video.id }}">
+                <div class="item">
+                    <div class="content-info">
+                        <div class="thumbnail">
+                            <img src="{{ video.thumbnail_url }}" alt="photo">
+                        </div>
+                        <div class="title">
+                            {{ video.channel_name }}<br>
+                            {{ video.video_title }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            자막
+            <button class="create-script-button" data-video-id="{{ video.id }}">
+                자막 생성
+            </button>
+        </div>
+        <div class="script-box">
+            <!-- <button class="copy-button">붙여넣기</button> -->
+            <div class="script-content">
+                {{ script.script }}
+            </div>
+        </div>
+        <div class="section">
+            블로그
+            <button class="create-blog-button" data-script-id="{{ script.id }}">
+                블로그 생성
+            </button>
+        </div>
+        <div class="blog-box">
+            <div class="blog-content">
+                블로그 내용입니다.
+            </div>
+        </div>
+    </span>
+</div>
+{% endblock %}
