@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Setup listeners for delete buttons
     setupItemBoxNavigation();
+    setupThumbnailNavigation();
     setupDeleteButtons();
 });
 
@@ -83,6 +84,16 @@ function setupItemBoxNavigation() {
         item.addEventListener('click', function () {
             const videoId = this.getAttribute('data-video-id');
             window.location.href = `http://127.0.0.1:8000/detail/${videoId}`;
+        });
+    });
+}
+
+function setupThumbnailNavigation() {
+    document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+        thumbnail.addEventListener('click', function (event) {
+            event.stopPropagation(); // Prevent triggering click on the item-box or other parent elements
+            const videoUrl = this.getAttribute('data-video-url');
+            window.open(`https://youtube.com/watch?v=${videoUrl}`, '_blank'); // Open in a new tab
         });
     });
 }
