@@ -12,11 +12,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    setupThumbnailNavigation();
     setupCreateScriptButton();
     setupCopyScriptButton();
     setupCreateBlogButton();
     setupCopyBlogButton();
 });
+
+function setupThumbnailNavigation() {
+    document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+        thumbnail.addEventListener('click', function (event) {
+            event.stopPropagation();
+            const videoUrl = this.getAttribute('data-video-url');
+            window.open(`https://youtube.com/watch?v=${videoUrl}`, '_blank');
+        });
+    });
+}
 
 function setupCreateScriptButton() {
     document.querySelectorAll('.create-script-button').forEach(button => {
