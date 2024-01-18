@@ -3,7 +3,7 @@ const BASE_URL = "http://127.0.0.1:8000";
 document.addEventListener('DOMContentLoaded', function () {
     setupCreateScriptButton();
     setupCreateBlogButton();
-    setupCopyToClipboardButton();
+    setupCopyBlogButton();
 });
 
 function setupCreateScriptButton() {
@@ -24,19 +24,30 @@ function setupCreateBlogButton() {
     });
 }
 
-function setupCopyToClipboardButton() {
-    document.querySelectorAll('.copy-button').forEach(button => {
-        button.addEventListener('click', function () {
-            const scriptText = this.nextElementSibling.textContent;
-            navigator.clipboard.writeText(scriptText).then(function () {
-                console.log('Script copied to clipboard successfully!');
-                button.textContent = 'Copied!';
-                setTimeout(() => { button.textContent = 'Copy'; }, 2000);
-            }, function (err) {
-                console.error('Could not copy text: ', err);
-            });
+function setupCopyBlogButton() {
+    const copyBlogButton = document.querySelector('.copy-blog-button');
+    if (copyBlogButton) {
+        copyBlogButton.addEventListener('click', function () {
+            // Get the blog content
+            const blogContent = document.querySelector('.blog-content').innerHTML;
+
+            // Create a temporary textarea element to hold the text
+            const textArea = document.createElement('textarea');
+            textArea.value = blogContent.replace(/<br>/g, '\n'); // Convert <br> back to \n
+            document.body.appendChild(textArea);
+
+            // Select the text and copy it to the clipboard
+            textArea.select();
+            document.execCommand('copy');
+
+            // Clean up: remove the temporary textarea
+            document.body.removeChild(textArea);
+
+            // Optional: Display a message or change the button text to give feedback to the user
+            copyBlogButton.textContent = '완료!';
+            setTimeout(() => { copyBlogButton.textContent = '복사'; }, 2000);
         });
-    });
+    }
 }
 
 function createScript(videoId) {
@@ -60,6 +71,7 @@ function createScript(videoId) {
 }
 
 function createBlog(scriptId) {
+    showSkeletonUI();
     fetch(`${BASE_URL}/blog/${scriptId}`, {
         method: 'POST',
         headers: {
@@ -69,21 +81,31 @@ function createBlog(scriptId) {
     })
     .then(response => {
         if (response.ok) {
-            window.location.reload();
+            return response.json();
         } else {
-            console.error('블로그 생성 응답 오류:', response.status);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+    })
+    .then(data => {
+        hideSkeletonUI();
+        window.location.reload();
     })
     .catch(error => {
         console.error('블로그 생성 오류:', error);
-    })
+        hideSkeletonUI();
+    });
 }
 
-// You might want to include the startBlogStream function if you are streaming updates for blog creation
-function startBlogStream(scriptId) {
-    // Existing logic for handling blog creation stream
+function showSkeletonUI() {
+    const blogContent = document.querySelector('.blog-content');
+    if (blogContent) {
+        blogContent.innerHTML = '<div class="skeleton"></div>';
+    }
 }
 
-function updateBlogContent(data) {
-    // Existing logic for updating the blog content area with the incoming data
+function hideSkeletonUI() {
+    const skeleton = document.querySelector('.skeleton');
+    if (skeleton) {
+        skeleton.remove();
+    }
 }
