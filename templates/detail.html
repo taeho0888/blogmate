@@ -30,7 +30,7 @@
         <div class="script-box">
             <!-- <button class="copy-button">붙여넣기</button> -->
             <div class="script-content">
-                {{ script.script }}
+                {{ script.script if script.script else '자막 칸 입니다.' }}
             </div>
         </div>
         <div class="section">
@@ -41,9 +41,13 @@
         </div>
         <div class="blog-box">
             <div class="blog-content">
-                블로그 내용입니다.
+                {{ (blog.blog.replace('\n', '<br>') if blog.blog else '블로그 칸 입니다.')|safe }}
             </div>
         </div>
     </span>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ url_for('static', path='/detail.js') }}"></script>
 {% endblock %}

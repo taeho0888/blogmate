@@ -50,10 +50,19 @@ def delete_video(id: int, db: Session = Depends(get_db)):
 def detail_page(request: Request, id:int, db: Session = Depends(get_db)):
     video = crud.get_video(db, id=id)
     script = crud.get_script(db, id=id)
+    if script:
+        blog = crud.get_blog_by_script_id(db, script_id=script.id)
+    else:
+        blog = None
 
     return templates.TemplateResponse(
         name="detail.html",
-        context={"request": request, "video": video, "script": script}
+        context={
+            "request": request, 
+            "video": video, 
+            "script": script,
+            "blog": blog
+        }
     )
 
 
@@ -62,12 +71,11 @@ async def create_script(id: int, db: Session = Depends(get_db)):
     return crud.create_script(db=db, video_id=id)
 
 
-@app.get("/blog/{script_id}/stream")
-async def blog_stream(script_id: int):
-    # This is a simple example. You'd have your logic to fetch and stream blog data.
-    async for blog_update in generate_blog_content(script_id):
-        yield f"data: {blog_update}\n\n"
+@app.post("/blog/{script_id}", response_model=schemas.Blog)
+async def create_blog(script_id: int, db: Session = Depends(get_db)):
+    return crud.create_blog(db=db, script_id=script_id)
 
 
-async def generate_blog_content(script_id: int):
-    pass
+@app.get("/blog/{id}", response_model=schemas.Blog)
+async def get_blog(id: int, db: Session = Depends(get_db)):
+    return crud.get_blog(db=db, id=id)

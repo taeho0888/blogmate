@@ -74,7 +74,6 @@ body, html {
 
 .title {
   font-size: 1rem; /* Tailwind text-base */
-  font-weight: 500; /* Tailwind font-medium */
   color: #333; /* Tailwind text-gray-800 */
 }
 

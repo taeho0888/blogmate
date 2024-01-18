@@ -30,6 +30,7 @@ requests = "*"
 beautifulsoup4 = "*"
 lxml = "*"
 youtube-transcript-api = "*"
+openai = "*"
 
 [dev-packages]
 

@@ -20,7 +20,7 @@
                         </div>
                         <div class="title">
                             {{ item.channel_name }}<br>
-                            {{ item.video_title }}
+                            <strong>{{ item.video_title }}</strong>
                         </div>
                     </div>
                     <button class="delete-button" data-video-id="{{ item.id }}">
@@ -32,4 +32,8 @@
         </div>
     </span>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ url_for('static', path='/index.js') }}"></script>
 {% endblock %}
