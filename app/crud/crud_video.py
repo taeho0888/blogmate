@@ -45,18 +45,29 @@ def delete(db: Session, video_id: int):
         return False
 
 
-def get_video_info(video_url: str):
-    url = f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_url}&key={YOUTUBE_API_KEY}"
+def get_video_info(video_id: str):
+    url = f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id}&key={YOUTUBE_API_KEY}"
     
     response = requests.get(url)
-
-    if response.status_code != 200:
-        print(response.status_code)
-        raise ValueError
     
+    if response.status_code != 200:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise ValueError(f"Request 오류, status code={response.status_code}")
+
     response_json = response.json()
-    thumbnail_url = response_json['items'][0]['snippet']['thumbnails']['default']['url']
-    video_title = response_json['items'][0]['snippet']['title']
-    channel_name = response_json['items'][0]['snippet']['channelTitle']
+
+    if not response_json.get('items') or not response_json['items']:
+        print(f"response['item'] 없음: {response_json}")
+        raise ValueError("해당 video id에 대한 정보 없음")
+    
+    try:
+        thumbnail_url = response_json['items'][0]['snippet']['thumbnails']['default']['url']
+        video_title = response_json['items'][0]['snippet']['title']
+        channel_name = response_json['items'][0]['snippet']['channelTitle']
+    except (IndexError, KeyError) as e:
+        print(f"동영상 정보 추출 에러: {e}")
+        print(f"Response JSON: {response_json}")
+        raise ValueError("Failed to extract video info.")
 
     return thumbnail_url, video_title, channel_name
