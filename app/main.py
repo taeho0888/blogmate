@@ -5,7 +5,6 @@ from app import models
 from app.api.api import api_router
 from app.database import engine
 
-
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()

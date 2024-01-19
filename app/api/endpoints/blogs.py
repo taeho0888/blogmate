@@ -5,7 +5,6 @@ from app import schemas
 from app.crud import crud_blog
 from app.api.deps import get_db
 
-
 router = APIRouter()
 
 

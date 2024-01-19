@@ -7,7 +7,6 @@ from app.api.deps import get_db
 from app.crud import crud_video
 from app.crud import crud_blog, crud_script, crud_video
 
-
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 

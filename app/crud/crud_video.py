@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 from app import models, schemas
 
-
 dotenv.load_dotenv()
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
