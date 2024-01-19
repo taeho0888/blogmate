@@ -16,7 +16,7 @@ class Video(VideoBase):
     channel_name: str
 
     class Config:
-        orm_mode = True
+        from_attribute = True
 
 
 class ScriptBase(BaseModel):
@@ -33,7 +33,7 @@ class Script(ScriptBase):
     script: str
 
     class Config:
-        orm_mode = True
+        from_attribute = True
 
 
 class BlogBase(BaseModel):
@@ -49,4 +49,4 @@ class Blog(BlogBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attribute = True
