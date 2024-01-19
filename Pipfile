@@ -31,6 +31,7 @@ beautifulsoup4 = "*"
 lxml = "*"
 youtube-transcript-api = "*"
 openai = "*"
+pytest = "*"
 
 [dev-packages]
 
