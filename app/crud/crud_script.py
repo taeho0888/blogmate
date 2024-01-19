@@ -32,7 +32,7 @@ def get(db: Session, id: int):
 def get_script_info(video_url: str):
     try:
         print(video_url)
-        scripts = YouTubeTranscriptApi.get_transcript(video_url, languages=['ko'])
+        scripts = YouTubeTranscriptApi.get_transcript(video_url, languages=['ko', 'en'])
         script = " ".join(script['text'] for script in scripts)
         errored = False
     except Exception as e:
