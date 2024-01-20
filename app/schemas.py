@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class VideoBase(BaseModel):
@@ -10,13 +10,12 @@ class VideoCreate(VideoBase):
 
 
 class Video(VideoBase):
+    model_config = ConfigDict(from_attribute=True)
+
     id: int
     thumbnail_url: str
     video_title: str
     channel_name: str
-
-    class Config:
-        from_attribute = True
 
 
 class ScriptBase(BaseModel):
@@ -28,12 +27,11 @@ class ScriptCreate(ScriptBase):
 
 
 class Script(ScriptBase):
+    model_config = ConfigDict(from_attribute=True)
+
     id: int
     errored: bool | None = False
     script: str
-
-    class Config:
-        from_attribute = True
 
 
 class BlogBase(BaseModel):
@@ -46,7 +44,6 @@ class BlogCreate(BlogBase):
 
 
 class Blog(BlogBase):
-    id: int
+    model_config = ConfigDict(from_attribute=True)
 
-    class Config:
-        from_attribute = True
+    id: int
